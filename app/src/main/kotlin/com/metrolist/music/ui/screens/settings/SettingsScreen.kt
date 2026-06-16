@@ -161,7 +161,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // System & About Section
+        // System Section
         Material3SettingsGroup(
             title = stringResource(R.string.settings_section_system),
             items = buildList {
@@ -224,13 +224,6 @@ fun SettingsScreen(
                         icon = painterResource(R.drawable.newspaper),
                         title = { Text(stringResource(R.string.changelog)) },
                         onClick = { showChangelog.value = true }
-                    )
-                )
-                add(
-                    Material3SettingsItem(
-                        icon = painterResource(R.drawable.info),
-                        title = { Text(stringResource(R.string.about)) },
-                        onClick = { navController.navigate("settings/about") }
                     )
                 )
                 if (BuildConfig.UPDATER_AVAILABLE && latestVersionName != BuildConfig.VERSION_NAME) {

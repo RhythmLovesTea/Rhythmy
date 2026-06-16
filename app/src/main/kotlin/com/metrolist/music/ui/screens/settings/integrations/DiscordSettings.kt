@@ -74,6 +74,7 @@ import coil3.compose.AsyncImage
 import com.metrolist.music.LocalPlayerAwareWindowInsets
 import com.metrolist.music.LocalPlayerConnection
 import com.metrolist.music.R
+import com.metrolist.music.constants.RepoLinks
 import com.metrolist.music.constants.DiscordActivityNameKey
 import com.metrolist.music.constants.DiscordActivityTypeKey
 import com.metrolist.music.constants.DiscordAdvancedModeKey
@@ -1008,7 +1009,7 @@ fun RichPresence(
                         val intent =
                             Intent(
                                 Intent.ACTION_VIEW,
-                                "https://github.com/MetrolistGroup/Metrolist".toUri(),
+                                RepoLinks.REPO_URL.toUri(),
                             )
                         context.startActivity(intent)
                     },

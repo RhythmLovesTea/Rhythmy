@@ -81,6 +81,7 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
@@ -91,6 +92,7 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
@@ -984,10 +986,31 @@ class MainActivity : ComponentActivity() {
                                 Row {
                                     TopAppBar(
                                         title = {
-                                            Text(
-                                                text = currentTitleRes?.let { stringResource(it) } ?: "",
-                                                style = MaterialTheme.typography.titleLarge,
-                                            )
+                                            val isHome = navBackStackEntry?.destination?.route == Screens.Home.route
+                                            if (isHome) {
+                                                val titleGradient =
+                                                    Brush.horizontalGradient(
+                                                        colors =
+                                                            listOf(
+                                                                Color(0xFFFF4FD8), // pink
+                                                                Color(0xFF8B5CF6), // purple
+                                                                Color(0xFF3B82F6), // blue
+                                                            ),
+                                                    )
+                                                Text(
+                                                    text = "Rhythmy",
+                                                    style =
+                                                        MaterialTheme.typography.titleLarge.copy(
+                                                            fontWeight = FontWeight.SemiBold,
+                                                            brush = titleGradient,
+                                                        ),
+                                                )
+                                            } else {
+                                                Text(
+                                                    text = currentTitleRes?.let { stringResource(it) } ?: "",
+                                                    style = MaterialTheme.typography.titleLarge,
+                                                )
+                                            }
                                         },
                                         actions = {
                                             if (showHistoryButton) {

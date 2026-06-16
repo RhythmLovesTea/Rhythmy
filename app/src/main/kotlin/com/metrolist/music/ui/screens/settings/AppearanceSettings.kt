@@ -30,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -41,7 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -62,7 +60,6 @@ import com.metrolist.music.constants.DefaultOpenTabKey
 import com.metrolist.music.constants.DensityScale
 import com.metrolist.music.constants.DensityScaleKey
 import com.metrolist.music.constants.DynamicThemeKey
-import com.metrolist.music.constants.EnableDynamicIconKey
 import com.metrolist.music.constants.EnableHighRefreshRateKey
 import com.metrolist.music.constants.ExperimentalLyricsKey
 import com.metrolist.music.constants.GridItemSize
@@ -114,7 +111,6 @@ import com.metrolist.music.ui.component.WavySlider
 import com.metrolist.music.ui.theme.DefaultThemeColor
 import com.metrolist.music.ui.theme.PlayerSliderColors
 import com.metrolist.music.ui.utils.backToMain
-import com.metrolist.music.utils.IconUtils
 import com.metrolist.music.utils.rememberEnumPreference
 import com.metrolist.music.utils.rememberPreference
 import kotlinx.coroutines.launch
@@ -133,11 +129,7 @@ fun AppearanceSettings(
             DynamicThemeKey,
             defaultValue = true,
         )
-    val (enableDynamicIcon, onEnableDynamicIconChange) =
-        rememberPreference(
-            EnableDynamicIconKey,
-            defaultValue = true,
-        )
+
     val (enableHighRefreshRate, onEnableHighRefreshRateChange) =
         rememberPreference(
             EnableHighRefreshRateKey,
@@ -150,28 +142,6 @@ fun AppearanceSettings(
         )
     // Check if user has selected a custom color (not the default/dynamic color)
     val isUsingCustomColor = selectedThemeColorInt != DefaultThemeColor.toArgb()
-    val coroutineScope = rememberCoroutineScope()
-
-    fun handleIconChange(enabled: Boolean) {
-        onEnableDynamicIconChange(enabled)
-        IconUtils.setIcon(activity, enabled)
-        coroutineScope.launch {
-            val result =
-                snackbarHostState.showSnackbar(
-                    message = "Icon updated, restart to apply",
-                    actionLabel = "Restart",
-                )
-            if (result == SnackbarResult.ActionPerformed) {
-                val packageManager = activity.packageManager
-                val intent = packageManager.getLaunchIntentForPackage(activity.packageName)
-                val componentName = intent?.component
-                val mainIntent = Intent.makeRestartActivityTask(componentName)
-                activity.startActivity(mainIntent)
-                Runtime.getRuntime().exit(0)
-            }
-        }
-    }
-
     val (useNewPlayerDesign, onUseNewPlayerDesignChange) =
         rememberPreference(
             UseNewPlayerDesignKey,
@@ -975,29 +945,7 @@ fun AppearanceSettings(
             title = stringResource(R.string.theme),
             items =
                 buildList {
-                    add(
-                        Material3SettingsItem(
-                            icon = painterResource(R.drawable.ic_dynamic_icon),
-                            title = { Text(stringResource(R.string.enable_dynamic_icon)) },
-                            trailingContent = {
-                                Switch(
-                                    checked = enableDynamicIcon,
-                                    onCheckedChange = { handleIconChange(it) },
-                                    thumbContent = {
-                                        Icon(
-                                            painter =
-                                                painterResource(
-                                                    id = if (enableDynamicIcon) R.drawable.check else R.drawable.close,
-                                                ),
-                                            contentDescription = null,
-                                            modifier = Modifier.size(SwitchDefaults.IconSize),
-                                        )
-                                    },
-                                )
-                            },
-                            onClick = { handleIconChange(!enableDynamicIcon) },
-                        ),
-                    )
+
                     add(
                         Material3SettingsItem(
                             icon = painterResource(R.drawable.speed),

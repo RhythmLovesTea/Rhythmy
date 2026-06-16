@@ -6,6 +6,7 @@
 package com.metrolist.music.utils
 
 import com.metrolist.music.BuildConfig
+import com.metrolist.music.constants.RepoLinks
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -39,7 +40,7 @@ object Updater {
     private var cachedAllReleases: List<ReleaseInfo> = emptyList()
     
     private const val CHECK_INTERVAL_MILLIS = 2 * 60 * 60 * 1000L // 2 hours
-    private const val GITHUB_API_BASE = "https://api.github.com/repos/MetrolistGroup/Metrolist"
+    private const val GITHUB_API_BASE = RepoLinks.GITHUB_API_BASE
 
     /**
      * Compares two version strings.
@@ -96,8 +97,8 @@ object Updater {
             
             // Parse architecture and variant from filename
             val (arch, variant) = when {
-                name == "Metrolist.apk" -> "universal" to "foss"
-                name == "Metrolist-with-Google-Cast.apk" -> "universal" to "gms"
+                name == "Rhythmy.apk" -> "universal" to "foss"
+                name == "Rhythmy-with-Google-Cast.apk" -> "universal" to "gms"
                 name.startsWith("app-") && name.endsWith("-release.apk") -> {
                     val arch = name.removePrefix("app-").removeSuffix("-release.apk")
                     arch to "foss"

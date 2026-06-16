@@ -42,7 +42,6 @@ import com.metrolist.music.ui.screens.recognition.RecognitionHistoryScreen
 import com.metrolist.music.ui.screens.recognition.RecognitionScreen
 import com.metrolist.music.ui.screens.search.OnlineSearchResult
 import com.metrolist.music.ui.screens.search.SearchScreen
-import com.metrolist.music.ui.screens.settings.AboutScreen
 import com.metrolist.music.ui.screens.settings.AiSettings
 import com.metrolist.music.ui.screens.settings.AndroidAutoSettings
 import com.metrolist.music.ui.screens.settings.AppearanceSettings
@@ -409,10 +408,6 @@ fun NavGraphBuilder.navigationBuilder(
 
     composable("settings/updater") {
         UpdaterScreen(navController)
-    }
-
-    composable("settings/about") {
-        AboutScreen(navController)
     }
 
     composable("login") {

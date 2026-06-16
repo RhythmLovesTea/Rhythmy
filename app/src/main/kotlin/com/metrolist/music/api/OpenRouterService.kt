@@ -5,6 +5,7 @@
 
 package com.metrolist.music.api
 
+import com.metrolist.music.constants.RepoLinks
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
@@ -166,7 +167,7 @@ Output MUST be a JSON array with EXACTLY $lineCount strings."""
                                     addHeader("Authorization", "Bearer ${apiKey.trim()}")
                                 }
                             }.addHeader("Content-Type", "application/json")
-                            .addHeader("HTTP-Referer", "https://github.com/MetrolistGroup/Metrolist")
+                            .addHeader("HTTP-Referer", RepoLinks.REPO_URL)
                             .addHeader("X-Title", "Metrolist")
                             .post(jsonBody.toString().toRequestBody(JSON))
                             .build()

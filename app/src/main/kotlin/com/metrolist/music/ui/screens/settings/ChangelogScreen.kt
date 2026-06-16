@@ -30,8 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.metrolist.music.R
 import com.metrolist.music.BuildConfig
+import com.metrolist.music.R
+import com.metrolist.music.constants.RepoLinks
 import com.metrolist.music.utils.ReleaseInfo
 import com.metrolist.music.utils.Updater
 
@@ -135,9 +136,8 @@ fun ChangelogScreen(
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
             ) {
-                val githubReleasesUrl = stringResource(R.string.github_releases_url)
                 ExtendedFloatingActionButton(
-                    onClick = { uriHandler.openUri(githubReleasesUrl) },
+                    onClick = { uriHandler.openUri(RepoLinks.RELEASES_URL) },
                     icon = { Icon(painterResource(R.drawable.github), contentDescription = null, modifier = Modifier.size(24.dp)) },
                     text = { Text(stringResource(R.string.view_on_github)) },
                     containerColor = MaterialTheme.colorScheme.onPrimary,

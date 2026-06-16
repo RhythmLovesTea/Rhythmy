@@ -7,6 +7,7 @@ package com.metrolist.music.utils
 
 import android.content.Context
 import com.metrolist.music.R
+import com.metrolist.music.constants.RepoLinks
 import com.metrolist.music.db.entities.Song
 import com.metrolist.music.discordrpc.ActivityType
 import com.metrolist.music.discordrpc.DiscordRpcConnection
@@ -77,7 +78,7 @@ class DiscordRPC(
                 button2Text.ifEmpty { "Visit Metrolist" },
                 song,
             )
-            buttonsList.add(Button(resolvedText, "https://github.com/MetrolistGroup/Metrolist"))
+            buttonsList.add(Button(resolvedText, RepoLinks.REPO_URL))
         }
 
         val type = when (activityType) {
