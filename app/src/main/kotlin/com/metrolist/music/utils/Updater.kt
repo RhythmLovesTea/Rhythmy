@@ -39,8 +39,8 @@ object Updater {
     private var cachedAllReleases: List<ReleaseInfo> = emptyList()
     
     private const val CHECK_INTERVAL_MILLIS = 2 * 60 * 60 * 1000L // 2 hours
-    private const val GITHUB_API_BASE = "https://api.github.com/repos/MetrolistGroup/Metrolist"
-    private const val KMP_LATEST_RELEASE_URL = "https://api.github.com/repos/MetrolistGroup/Metrolist-KMP/releases/latest"
+    private const val GITHUB_API_BASE = "https://api.github.com/repos/RhythmLovesTea/Rhythmy"
+    private const val KMP_LATEST_RELEASE_URL = "https://api.github.com/repos/RhythmLovesTea/Rhythmy/releases/latest"
     private const val KMP_APK_NAME = "Metrolist.apk"
 
     /**
@@ -98,8 +98,9 @@ object Updater {
             
             // Parse architecture and variant from filename
             val (arch, variant) = when {
-                name == "Metrolist.apk" -> "universal" to "foss"
-                name == "Metrolist-with-Google-Cast.apk" -> "universal" to "gms"
+                name == "Metrolist.apk" || name == "Rhythmy.apk" -> "universal" to "foss"
+                name == "Metrolist-with-Google-Cast.apk" || name == "Rhythmy-with-Google-Cast.apk" -> "universal" to "gms"
+                name == "Metrolist-izzy.apk" || name == "Rhythmy-izzy.apk" -> "universal" to "foss"
                 name.startsWith("app-") && name.endsWith("-release.apk") -> {
                     val arch = name.removePrefix("app-").removeSuffix("-release.apk")
                     arch to "foss"
@@ -193,7 +194,7 @@ object Updater {
 
     internal fun parseKmpRelease(response: String): ReleaseInfo? {
         val release = JSONObject(response)
-        val assets = parseAssets(release.getJSONArray("assets")).filter { it.name == KMP_APK_NAME }
+        val assets = parseAssets(release.getJSONArray("assets")).filter { it.name == KMP_APK_NAME || it.name == "Rhythmy.apk" }
         val tagName = release.getString("tag_name")
 
         return ReleaseInfo(
@@ -208,12 +209,7 @@ object Updater {
     /**
      * Returns the latest stable KMP release when it includes an Android APK.
      */
-    suspend fun getLatestKmpRelease(): Result<ReleaseInfo?> =
-        withContext(Dispatchers.IO) {
-            runCatching {
-                parseKmpRelease(client.get(KMP_LATEST_RELEASE_URL).bodyAsText())
-            }
-        }
+    suspend fun getLatestKmpRelease(): Result<ReleaseInfo?> = Result.success(null)
 
     /**
      * Get the download URL for the correct app variant
