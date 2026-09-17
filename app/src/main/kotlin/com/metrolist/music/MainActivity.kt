@@ -88,6 +88,7 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
@@ -99,9 +100,14 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastAny
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -1052,6 +1058,18 @@ class MainActivity : FragmentActivity() {
                         ChangelogScreen(onDismiss = { showChangelog.value = false })
                     }
 
+                    val poppinsFont = remember { FontFamily(Font(R.font.poppins_bold)) }
+                    val rhythmyGradient =
+                        remember {
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color(0xFFFF2A85),
+                                    Color(0xFF903AFF),
+                                    Color(0xFF00C6FF),
+                                ),
+                            )
+                        }
+
                     Scaffold(
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         topBar = {
@@ -1063,10 +1081,24 @@ class MainActivity : FragmentActivity() {
                                 Row {
                                     TopAppBar(
                                         title = {
-                                            Text(
-                                                text = currentTitleRes?.let { stringResource(it) } ?: "",
-                                                style = MaterialTheme.typography.titleLarge,
-                                            )
+                                            if (navBackStackEntry?.destination?.route == Screens.Home.route) {
+                                                Text(
+                                                    text = "Rhythmy",
+                                                    style =
+                                                        TextStyle(
+                                                            fontFamily = poppinsFont,
+                                                            fontWeight = FontWeight.Bold,
+                                                            fontSize = 26.sp,
+                                                            letterSpacing = (-0.5).sp,
+                                                            brush = rhythmyGradient,
+                                                        ),
+                                                )
+                                            } else {
+                                                Text(
+                                                    text = currentTitleRes?.let { stringResource(it) } ?: "",
+                                                    style = MaterialTheme.typography.titleLarge,
+                                                )
+                                            }
                                         },
                                         actions = {
                                             if (showHistoryButton) {
